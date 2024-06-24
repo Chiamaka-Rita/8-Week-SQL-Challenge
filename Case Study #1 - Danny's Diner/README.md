@@ -233,9 +233,36 @@ ORDER BY t1.customer_id;
 | B           | 940          |
 
 
-
-
-
+## Bonus Question
+Replicate the table that would help Danny and his team quickly derive insights without needing to join the underlying tables using SQL. This table would include customer_id, order_date_product_name, price, and when customer became a member.
+```SQL
+SELECT s.customer_id, order_date, product_name, price, CASE 
+WHEN mem.customer_id IS NOT NULL AND order_date < join_date THEN 'N'
+WHEN mem.customer_id IS NOT NULL AND order_date >= join_date THEN 'Y' ELSE 'N' END AS member
+FROM dannys_diner.sales s
+INNER JOIN dannys_diner.menu m
+ON s.product_id = m.product_id
+FULL OUTER JOIN dannys_diner.members mem
+ON s.customer_id = mem.customer_id
+ORDER BY s.customer_id, order_date 
+```
+| customer_id | order_date               | product_name | price | member |
+|-------------|--------------------------|--------------|-------|--------|
+| A           | 2021-01-01T00:00:00.000Z | sushi        | 10    | N      |
+| A           | 2021-01-01T00:00:00.000Z | curry        | 15    | N      |
+| A           | 2021-01-07T00:00:00.000Z | curry        | 15    | Y      |
+| A           | 2021-01-10T00:00:00.000Z | ramen        | 12    | Y      |
+| A           | 2021-01-11T00:00:00.000Z | ramen        | 12    | Y      |
+| A           | 2021-01-11T00:00:00.000Z | ramen        | 12    | Y      |
+| B           | 2021-01-01T00:00:00.000Z | curry        | 15    | N      |
+| B           | 2021-01-02T00:00:00.000Z | curry        | 15    | N      |
+| B           | 2021-01-04T00:00:00.000Z | sushi        | 10    | N      |
+| B           | 2021-01-11T00:00:00.000Z | sushi        | 10    | Y      |
+| B           | 2021-01-16T00:00:00.000Z | ramen        | 12    | Y      |
+| B           | 2021-02-01T00:00:00.000Z | ramen        | 12    | Y      |
+| C           | 2021-01-01T00:00:00.000Z | ramen        | 12    | N      |
+| C           | 2021-01-01T00:00:00.000Z | ramen        | 12    | N      |
+| C           | 2021-01-07T00:00:00.000Z | ramen        | 12    | N      |
 
 
 
