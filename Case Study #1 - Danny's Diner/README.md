@@ -2,7 +2,7 @@
 Danny a restaurant owner want to use data to answer simple questions questions about his customers. The insights from these analysis will help him decide if he should expand his exisiting customer loyalty program. Also, he needs help to generate some basic datasets so his team can easily inspect the data without needing to use SQL.
 
 ## Dataset
-The three key datasets for this analysis are as shown below;
+The three key datasets provided for this analysis includes;
 * Sales
 * Menu
 * Members
