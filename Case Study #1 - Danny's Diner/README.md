@@ -57,7 +57,7 @@ FROM dannys_diner.sales s
 JOIN dannys_diner.menu m
 on s.product_id = m.product_id
 WHERE order_date = (SELECT date_trunc('month', MIN(order_date)) FROM dannys_diner.sales)
-ORDER BY customer_id
+ORDER BY customer_id;
 ```
 | customer_id | order_date               | product_name |
 |-------------|--------------------------|--------------|
@@ -75,7 +75,7 @@ JOIN dannys_diner.menu m
 ON s.product_id = m.product_id
 GROUP BY s.product_id, product_name
 ORDER BY times_purchased DESC
-LIMIT 1
+LIMIT 1;
 ```
 | product_id | product_name | times_purchased |
 |------------|--------------|-----------------|
@@ -90,7 +90,7 @@ FROM dannys_diner.sales s
 JOIN dannys_diner.menu m
 ON s.product_id = m.product_id
 GROUP BY s.customer_id, product_name) as sub_query1) as sub_query2
-WHERE rank = 1
+WHERE rank = 1;
 ```
 | customer_id | product_name | times_purchased |
 |-------------|--------------|-----------------|
@@ -116,7 +116,7 @@ FROM table2 t
 JOIN dannys_diner.menu m
 ON m.product_id = t.product_id
 WHERE rank = 1
-ORDER BY customer_id
+ORDER BY customer_id;
 ```
 | customer_id | join_date                | order_date               | product_name |
 | ----------- | ------------------------ | ------------------------ | ------------ |
@@ -140,7 +140,7 @@ FROM table2 t
 JOIN dannys_diner.menu m
 ON t.product_id = m.product_id
 WHERE rank = 1
-ORDER BY customer_id
+ORDER BY customer_id;
 ```
 
 | customer_id | product_name |
@@ -162,7 +162,7 @@ FROM table1 t
 JOIN dannys_diner.menu m
 ON t.product_id = m.product_id
 GROUP BY customer_id
-ORDER BY customer_id
+ORDER BY customer_id;
 ```
 | customer_id | total_items | total_amount_spent |
 |-------------|-------------|--------------------|
@@ -185,7 +185,7 @@ FROM table1)
 
 SELECT customer_id, SUM(points_table) points
 FROM table2
-GROUP BY customer_id
+GROUP BY customer_id;
 ```
 | customer_id | points |
 |-------------|--------|
@@ -225,7 +225,7 @@ FROM table1 t1
 JOIN table3 t3
 ON t1.customer_id = t3.customer_id
 GROUP BY t1.customer_id , total_price
-ORDER BY t1.customer_id
+ORDER BY t1.customer_id;
 ```
 | customer_id | total_points |
 |-------------|--------------|
