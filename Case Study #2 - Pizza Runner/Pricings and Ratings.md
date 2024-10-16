@@ -30,6 +30,8 @@ VALUES (1, 101, 1, 5),
        (7, 105, 2, 4),
        (8, 102, 2, 3),
        (10, 104, 1, 4);
+SELECT *
+FROM runner_rating;
 ```
 ### Q4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?
 customer_id
@@ -44,7 +46,22 @@ Average speed
 Total number of pizzas
 
 ```SQL
-WITH table1 AS (SELECT co.customer_id, nr.order_id, runner_id, order_time, pickup_time, duration_mins, ROUND((distance_km/duration_mins) * 60) speed_km_hr, EXTRACT('minute' FROM (date_trunc('minute', (pickup_time - order_time)))) time_difference
+SET search_path = pizza_runner;
+DROP TABLE IF EXISTS runner_rating;
+
+CREATE TABLE runner_rating (order_id int primary key, customer_id int, runner_id int, rating int);
+
+INSERT INTO runner_rating (order_id, customer_id, runner_id, rating)
+VALUES (1, 101, 1, 5),
+	   (2, 101, 1, 3),
+       (3, 102, 1, 4),
+       (4, 103, 2, 4),
+       (5, 104, 3, 5),
+       (7, 105, 2, 4),
+       (8, 102, 2, 3),
+       (10, 104, 1, 4);
+
+WITH table1 AS (SELECT nc.customer_id, nr.order_id, runner_id, order_time, pickup_time, duration_mins, ROUND((distance_km/duration_mins) * 60) avg_speed_km_hr, EXTRACT('minute' FROM (date_trunc('minute', (pickup_time - order_time)))) time_difference
 FROM new_customer_orders nc
 JOIN new_runner_orders nr
 ON nc.order_id = nr.order_id
@@ -55,13 +72,14 @@ table2 AS (SELECT order_id, count(pizza_id) num_pizzas
 FROM new_customer_orders
 GROUP BY order_id)
 
-SELECT t1.customer_id, t1.order_id, t1.runner_id, rating, order_time, pickup_time, time_difference, speed_km_hr, duration_mins, num_pizzas
+SELECT t1.customer_id, t1.order_id, t1.runner_id, rating, order_time, pickup_time, time_difference, avg_speed_km_hr, duration_mins, num_pizzas
 FROM table1 t1
 JOIN table2 t2
 ON t1.order_id = t2.order_id
 JOIN runner_rating rr
 ON rr.order_id = t1.order_id
-ORDER BY order_id
+ORDER BY order_id;
+
 ```
 
 ### Q5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?
@@ -74,5 +92,5 @@ ON nr.order_id = nc.order_id
 WHERE cancellation = '')
 ​
 SELECT ROUND(SUM(cost_usd) - SUM(runner_payment_usd)::integer, 2) revenu
-FROM table1
+FROM table1;
 ```
