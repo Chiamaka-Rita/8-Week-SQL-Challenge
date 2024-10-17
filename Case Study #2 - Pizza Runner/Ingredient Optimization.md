@@ -12,7 +12,7 @@ ON t1.pizza_id = r.pizza_id
 JOIN pizza_runner.pizza_toppings pt
 ON t1.toppings = pt.topping_id)
 
-SELECT pizza_name, ARRAY_TO_STRING(ARRAY_AGG(topping_name), ', ')
+SELECT pizza_name, ARRAY_TO_STRING(ARRAY_AGG(topping_name), ', ') standard_toppings
 FROM table2
 GROUP BY pizza_name;
 ```
@@ -20,6 +20,12 @@ GROUP BY pizza_name;
 <pr>-- splits string into array elements using supplied delimiter and optional null string <br>
 <pr>-- array_agg aggregates the values of the topping_name into an array for each pizza name <br>
 <pr>-- array_to_string converts the array in to string with a space as a delimiter between the values <br>
+
+| pizza_name | standard_toppings                                                     |
+| ---------- | --------------------------------------------------------------------- |
+| Meatlovers | BBQ Sauce, Pepperoni, Cheese, Salami, Chicken, Bacon, Mushrooms, Beef |
+| Vegetarian | Tomato Sauce, Cheese, Mushrooms, Onions, Peppers, Tomatoes            |
+
 
 ### Q2. What was the most commonly added extra?
 ```SQL
@@ -37,6 +43,10 @@ JOIN pizza_runner.pizza_toppings pt
 ON pt.topping_id = table2.most_common_extra
 group by topping_name;
 ```
+| topping_name | frequency |
+| ------------ | --------- |
+| Bacon        | 4         |
+
 ### Q3. What was the most common exclusion?
 ```SQL
 SELECT topping_name, most_common_exclusion
@@ -48,4 +58,7 @@ ORDER BY order_id) AS table1) as table2
 JOIN pizza_runner.pizza_toppings pt
 ON pt.topping_id = table2.most_common_exclusion;
 ```
+| topping_name | most_common_exclusion |
+| ------------ | --------------------- |
+| Cheese       | 4                     |
 
