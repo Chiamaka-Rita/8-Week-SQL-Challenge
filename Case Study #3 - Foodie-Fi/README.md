@@ -17,3 +17,4 @@ The case study questions are broken up by hte area of focus which includes
 
 # Solutions
 ### A. [Customer Journey](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%233%20-%20Foodie-Fi/Customer%20Journey.md)
+### B. [Data Analysis Question](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%233%20-%20Foodie-Fi/Data%20Analysis%20Question.md)
