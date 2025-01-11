@@ -6,4 +6,14 @@ The dataset provided for this analysis include
 1. plans
 2. subscriptions
 
-Click [here] (https://8weeksqlchallenge.com/case-study-3/)
+Click [here](https://8weeksqlchallenge.com/case-study-3/) for more information about this challenge
+
+# Case Study Questions
+The case study questions are broken up by hte area of focus which includes
+* Customer's Journey
+* Data Analysis Question
+* Challenge Payment Questions
+* Outside the Box Questions
+
+# Solutions
+
