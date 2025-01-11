@@ -109,3 +109,5 @@ WHERE extras is null or extras like '%null';
 # Solutions
 ### [A. Pizza Metrics](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/Pizza%20Metrics.md)
 ### [B. Runner and Customer Experience](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/Runner%20and%20Customer%20Experience.md)
+### [C. Ingredient Optimization](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/Ingredient%20Optimization.md)
+### [D. Pricing and Ratings](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/Pricings%20and%20Ratings.md)
