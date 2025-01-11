@@ -16,4 +16,4 @@ The case study questions are broken up by hte area of focus which includes
 * Outside the Box Questions
 
 # Solutions
-
+### A. [Customer Journey](https://github.com/Chiamaka-Rita/8-Week-SQL-Challenge/blob/main/Case%20Study%20%233%20-%20Foodie-Fi/Customer%20Journey.md)
