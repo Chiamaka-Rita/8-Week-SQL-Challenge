@@ -1,4 +1,4 @@
-## Q1. Based off the 8 sample customers provided in the sample subscription table, write a brief description about each customer's onboarding journey.
+## Q1. Based off the 8 sample customers provided in the sample subscription table, write a brief description about each customer's onboarding journey?
 ```SQL
 SELECT customer_id, fp.plan_id, plan_name, start_date, ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY start_date)
 FROM foodie_fi.subscriptions fs
