@@ -56,7 +56,7 @@ ORDER BY num_of_events;
 | pro annual    | 63            |
 | churn         | 71            |
 
-### Q4. What is the customer count and percentage of customer plans after their initial free trial?
+### Q4. What is the customer count and percentage of customer plans who have churned rounded to 1 decimal place?
 ``` SQL
 SELECT COUNT(DISTINCT customer_id) AS churned_customers, ROUND(100.0 * COUNT(DISTINCT customer_id)/(SELECT COUNT(DISTINCT customer_id) FROM foodie_fi.subscriptions), 1) AS churned_percentage
 FROM foodie_fi.subscriptions fs
@@ -68,7 +68,7 @@ WHERE plan_name = 'churn';
 | ----------------- | ------------------ |
 | 307               | 30.7               |
 
-### Q5. HOw many customers have churned straight after their inintial free trial - what percentage is this rounded to the nearest whole number?
+### Q5. How many customers have churned straight after their inintial free trial - what percentage is this rounded to the nearest whole number?
 ```SQL
 WITH table1 AS (SELECT customer_id, plan_name trial_plan_name, start_date trial_start_date, ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY start_date)
 FROM foodie_fi.subscriptions fs
@@ -94,3 +94,32 @@ WHERE churned_after_trial = 'churned'
 | churned_after_trial | churned_percentage |
 | ------------------- | ------------------ |
 | 92                  | 9                  |
+
+### Q6. What is the number an dpercentage of the customer plans after their initial free trial?
+```SQL
+WITH table2 as (WITH table1 AS (SELECT customer_id, plan_name, ROW_NUMBER() OVER(PARTITION BY fs.customer_id ORDER BY fs.plan_id)
+FROM foodie_fi.plans fp
+JOIN foodie_fi.subscriptions fs
+ON fp.plan_id = fs.plan_id
+GROUP BY plan_name, customer_id, fs.plan_id, start_date)
+
+SELECT plan_name, COUNT(row_number) customers_plan_count
+FROM table1
+WHERE row_number = 2 AND plan_name != 'trial'
+GROUP BY plan_name)
+
+SELECT *, ROUND(sum(customers_plan_count) * 100.0/SUM(SUM(customers_plan_count)) OVER (), 1) AS percentage
+FROM table2
+GROUP BY plan_name, customers_plan_count;
+```
+| plan_name     | customers_plan_count | percentage |
+| ------------- | -------------------- | ---------- |
+| basic monthly | 546                  | 54.6       |
+| churn         | 92                   | 9.2        |
+| pro annual    | 37                   | 3.7        |
+| pro monthly   | 325                  | 32.5       |
+
+
+
+
+```
