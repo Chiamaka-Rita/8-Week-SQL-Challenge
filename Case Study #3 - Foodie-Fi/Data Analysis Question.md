@@ -119,7 +119,3 @@ GROUP BY plan_name, customers_plan_count;
 | pro annual    | 37                   | 3.7        |
 | pro monthly   | 325                  | 32.5       |
 
-
-
-
-```
