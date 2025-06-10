@@ -95,7 +95,7 @@ WHERE churned_after_trial = 'churned'
 | ------------------- | ------------------ |
 | 92                  | 9                  |
 
-### Q6. What is the number an dpercentage of the customer plans after their initial free trial?
+### Q6. What is the number and percentage of the customer plans after their initial free trial?
 ```SQL
 WITH table2 as (WITH table1 AS (SELECT customer_id, plan_name, ROW_NUMBER() OVER(PARTITION BY fs.customer_id ORDER BY fs.plan_id)
 FROM foodie_fi.plans fp
@@ -119,3 +119,27 @@ GROUP BY plan_name, customers_plan_count;
 | pro annual    | 37                   | 3.7        |
 | pro monthly   | 325                  | 32.5       |
 
+### Q7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
+Hint: The customers plans as at 2020-12-31
+```SQL
+WITH table1 as (SELECT customer_id,fp.plan_id, plan_name, ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY start_date DESC) ranking, start_date
+FROM foodie_fi.plans fp
+JOIN foodie_fi.subscriptions fs
+ON fp.plan_id = fs.plan_id
+WHERE start_date <= '2020-12-31'
+GROUP BY customer_id, fp.plan_id, plan_name,start_date
+ORDER BY customer_id)
+
+SELECT plan_name, COUNT(customer_id) customer_count, ROUND(count(customer_id) * 100.0/SUM(COUNT(customer_id)) OVER (), 1) AS percentage
+FROM table1
+WHERE ranking = 1
+GROUP BY plan_name
+ORDER BY customer_count
+```
+| plan_name     | customer_count | percentage |
+| ------------- | -------------- | ---------- |
+| trial         | 19             | 1.9        |
+| pro annual    | 195            | 19.5       |
+| basic monthly | 224            | 22.4       |
+| churn         | 236            | 23.6       |
+| pro monthly   | 326            | 32.6       |
