@@ -143,3 +143,15 @@ ORDER BY customer_count
 | basic monthly | 224            | 22.4       |
 | churn         | 236            | 23.6       |
 | pro monthly   | 326            | 32.6       |
+
+### Q8. How many customers have upgraded to an annual plan in 2020?
+```SQL
+SELECT COUNT(customer_id) customer_count
+FROM foodie_fi.subscriptions fs
+JOIN plans pn
+ON pn.plan_id = fs.plan_id
+WHERE start_date <= '2020-12-31' AND plan_name = 'pro annual'
+```
+| customer_count |
+| -------------- |
+| 195            |
