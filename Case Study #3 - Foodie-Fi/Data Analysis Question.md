@@ -1,4 +1,4 @@
-### Q1. HOw many customers has Foodie-Fi ever had?
+### Q1. How many customers has Foodie-Fi ever had?
 ``` SQL
 SELECT COUNT(distinct(customer_id))
 FROM foodie_fi.subscriptions;
@@ -155,3 +155,5 @@ WHERE start_date <= '2020-12-31' AND plan_name = 'pro annual'
 | customer_count |
 | -------------- |
 | 195            |
+
+#### Q9.How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
