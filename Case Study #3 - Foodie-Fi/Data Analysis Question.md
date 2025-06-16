@@ -181,3 +181,45 @@ FROM table3
 | avg_days_to_pro_annual |
 | ---------------------- |
 | 104.62                 |
+
+### Q10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
+```SQL
+WITH table1 AS (SELECT customer_id, plan_name, start_date
+FROM plans pn
+JOIN subscriptions sb
+ON pn.plan_id = sb.plan_id
+WHERE plan_name = 'trial'),
+
+table2 AS (SELECT customer_id, plan_name, start_date
+FROM plans pn
+JOIN subscriptions sb
+ON pn.plan_id = sb.plan_id
+WHERE plan_name = 'pro annual'),
+
+bins AS (SELECT WIDTH_BUCKET((t2.start_date::date - t1.start_date::date), 0, 365,12) bucket, count(t2.start_date::date - t1.start_date::date) customer_count
+FROM table1 t1
+JOIN table2 t2
+ON t1.customer_id = t2.customer_id
+GROUP BY bucket
+ORDER BY bucket)
+
+SELECT CONCAT((bucket-1)*30,'-',bucket*30, 'days') signup_window, customer_count
+FROM bins
+```
+| signup_window | customer_count |
+| ------------- | -------------- |
+| 0-30days      | 49             |
+| 30-60days     | 24             |
+| 60-90days     | 35             |
+| 90-120days    | 35             |
+| 120-150days   | 43             |
+| 150-180days   | 37             |
+| 180-210days   | 24             |
+| 210-240days   | 4              |
+| 240-270days   | 4              |
+| 270-300days   | 1              |
+| 300-330days   | 1              |
+| 330-360days   | 1              |
+
+
+
