@@ -156,4 +156,28 @@ WHERE start_date <= '2020-12-31' AND plan_name = 'pro annual'
 | -------------- |
 | 195            |
 
-#### Q9.How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+### Q9.How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+```SQL
+WITH table1 as (SELECT customer_id, plan_name, start_date
+FROM plans pn
+JOIN subscriptions sb
+ON pn.plan_id = sb.plan_id
+WHERE plan_name = 'trial'),
+
+table2 AS (SELECT customer_id, plan_name, start_date
+FROM plans pn
+JOIN subscriptions sb
+ON pn.plan_id = sb.plan_id
+WHERE plan_name = 'pro annual'),
+
+table3 AS (SELECT t2.start_date::date - t1.start_date::date time_diff
+FROM table1 t1
+JOIN table2 t2
+ON t1.customer_id = t2.customer_id)
+
+SELECT round(avg(time_diff), 2) avg_days_to_pro_annual
+FROM table3
+```
+| avg_days_to_pro_annual |
+| ---------------------- |
+| 104.62                 |
