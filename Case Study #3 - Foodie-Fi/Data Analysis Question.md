@@ -196,14 +196,14 @@ JOIN subscriptions sb
 ON pn.plan_id = sb.plan_id
 WHERE plan_name = 'pro annual'),
 
-bins AS (SELECT WIDTH_BUCKET((t2.start_date::date - t1.start_date::date), 0, 365,12) bucket, count(t2.start_date::date - t1.start_date::date) customer_count
+bins AS (SELECT WIDTH_BUCKET((t2.start_date::date - t1.start_date::date), 0, 365,12) category, count(t2.start_date::date - t1.start_date::date) customer_count
 FROM table1 t1
 JOIN table2 t2
 ON t1.customer_id = t2.customer_id
-GROUP BY bucket
-ORDER BY bucket)
+GROUP BY category
+ORDER BY category)
 
-SELECT CONCAT((bucket-1)*30,'-',bucket*30, 'days') signup_window, customer_count
+SELECT CONCAT((category-1)*30,'-',category*30, ' days') signup_window, customer_count
 FROM bins
 ```
 | signup_window | customer_count |
@@ -221,5 +221,16 @@ FROM bins
 | 300-330days   | 1              |
 | 330-360days   | 1              |
 
-
+### Q11.How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
+```SQL
+SELECT COUNT(customer_id) num_of_customer_downgraded
+FROM (SELECT customer_id, plan_name, lag(plan_name)over(partition by customer_id ORDER BY start_date) previous_plan
+FROM plans pn
+JOIN subscriptions sp
+ON pn.plan_id = sp.plan_id) subquery
+WHERE plan_name = 'basic monthly' AND previous_plan = 'pro monthly'
+```
+| num_of_customer_downgraded |
+| -------------------------- |
+| 0                          |
 
